@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'components/Redux/contactsSlice';
+import { deleteContact } from 'Redux/contactsSlice';
 import { DeleteButton } from './ContactList.styled';
 
-const ContactListItem = ({ id, text, number, onDeleteContact }) => {
+const ContactListItem = ({ id, text, number }) => {
   const dispatch = useDispatch();
   return (
     <li>

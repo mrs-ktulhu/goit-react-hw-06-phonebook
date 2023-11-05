@@ -1,7 +1,7 @@
 import React from 'react';
 import { FilterWrap } from './Filter.styled';
 import { useDispatch } from 'react-redux';
-import { setFilter } from 'components/Redux/filter';
+import { setFilter } from 'Redux/filter';
 
 const Filter = () => {
   const dispatch = useDispatch();

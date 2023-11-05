@@ -1,6 +1,6 @@
 import { Wrap } from './App.styled';
 import { useSelector } from 'react-redux';
-import { selectContacts, selectFilter} from './Redux/selector';
+import { selectContacts, selectFilter } from 'Redux/selector';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
