@@ -1,47 +1,28 @@
-import {useState, useEffect} from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../Redux/contactsSlice';
+import { selectContacts } from '../Redux/selector';
 import { nanoid } from 'nanoid';
 import { Container, FormInput, SubmitButton } from './ContactForm.styled';
 
-const useLocalStorage = (key,defaultValue) => {
-  const [state, setState] = useState(()=>{
-    return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
-  });
-  useEffect(()=>{
-    window.localStorage.setItem(key, JSON.stringify(state));
-  },[key, state]);
+export default function ContactForm () {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
-  return [state, setState];
-}
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-export default function ContactForm({contacts, onSubmit}) {
-  const [name, setName] = useLocalStorage('name', '');
-  const [number, setNumber] = useLocalStorage('number', '');
+    const form = event.target;
+    const name = form.elements.name.value;
+    const number = form.elements.number.value;
 
-  const handleChange = e => {
-    const {name, value} = e.target;
-    switch(name){
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-  
-    if (contacts.some(contact => contact.text === name)) {
+    if (contacts.find(contact => contact.name === name)) {
       alert(`${name} is already in contacts.`);
-      setName('');
-    } else {
-      onSubmit(name, number);
-      setName('');
-      setNumber('')
+      return;
     }
+
+    dispatch(addContact({ name, number }));
+    form.reset();
   };
 
   return (
@@ -55,8 +36,6 @@ export default function ContactForm({contacts, onSubmit}) {
             placeholder="Enter name"
             name="name"
             id={nanoid()}
-            value={name}
-            onChange={handleChange}
             required
           />
         </FormInput>
@@ -69,8 +48,6 @@ export default function ContactForm({contacts, onSubmit}) {
             placeholder="Enter number"
             name="number"
             id={nanoid()}
-            value={number}
-            onChange={handleChange}
             required
           />
         </FormInput>
